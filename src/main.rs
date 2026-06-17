@@ -9,48 +9,48 @@ use {
         quadtree::TreeParams,
         state::State,
     },
-    macroquad::prelude::*,
-    std::time::Instant,
+    macroquad::{miniquad::window::set_window_size, prelude::*},
+    std::{f32::consts::PI, time::Instant},
 };
 
-const SPEED: f32 = 40.;
-const THETA: f32 = 0.7;
+const SPEED: f32 = 5.;
+const THETA: f32 = 1.2;
 
 #[macroquad::main("Barnes-Hut")]
 async fn main() {
+    set_window_size(800, 800);
+
     let params = TreeParams {
-        max_depth: 9,
-        leaf_size: Vec2::new(12., 12.),
+        max_depth: 6,
+        leaf_size: Vec2::new(25., 25.),
         center: Vec2::ZERO,
     };
 
     let mut galaxy1 = spiral_galaxy(SpiralGalaxy {
         pos: Vec2::new(0., 0.),
         vel: Vec2::new(0., 0.),
-        mass: 2000.,
-        radius: 190.,
-        objects_count: 1000,
-    });
-    let mut galaxy2 = spiral_galaxy(SpiralGalaxy {
-        pos: Vec2::new(300., 0.),
-        vel: Vec2::new(0., -(2500f32 / 300.).sqrt()),
-        mass: 500.,
-        radius: 90.,
-        objects_count: 300,
+        mass: 500000.,
+        max_radius: 200.,
+        objects_count: 10000,
+        min_radius: 20.,
+        period: 20.,
+        sleeves: 4,
+        curvature_angle: 3. * PI / 4.,
     });
 
     let mut objects = Vec::new();
     objects.append(&mut galaxy1);
-    objects.append(&mut galaxy2);
 
     let mut state = State::new(objects, params);
 
-    let mut delta_time = 0.;
+    let mut delta_time: f32 = 0.;
 
     loop {
         let frame_start = Instant::now();
 
         clear_background(BLACK);
+
+        state.update(SPEED * delta_time.min(0.02f32), THETA);
 
         for obj in &state.objects {
             draw_circle(
@@ -60,8 +60,6 @@ async fn main() {
                 Color::from_rgba(255, 255, 255, 255),
             );
         }
-
-        state.update(SPEED * delta_time, THETA);
 
         next_frame().await;
 
