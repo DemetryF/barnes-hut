@@ -2,12 +2,14 @@ mod galaxy;
 mod object;
 mod quadtree;
 mod state;
+mod tools;
 
 use {
     crate::{
         galaxy::{SpiralGalaxy, spiral_galaxy},
         quadtree::TreeParams,
         state::State,
+        tools::make_orbit_each_other,
     },
     macroquad::{miniquad::window::set_window_size, prelude::*},
     std::{f32::consts::PI, time::Instant},
@@ -27,19 +29,34 @@ async fn main() {
         center: Vec2::ZERO,
     };
 
-    let mut galaxy1 = spiral_galaxy(SpiralGalaxy {
+    let mut galaxy1 = SpiralGalaxy {
         pos: Vec2::new(0., 0.),
         vel: Vec2::new(0., 0.),
         mass: 500000.,
-        max_radius: 350.,
-        objects_count: 20000,
+        max_radius: 200.,
+        objects_count: 10000,
         min_radius: 100.,
+        sleeves: 4,
+        curvature_angle: 5. * PI / 4.,
+    };
+    let mut galaxy2 = SpiralGalaxy {
+        pos: Vec2::new(400., 0.),
+        vel: Vec2::new(0., 0.),
+        mass: 40000.,
+        max_radius: 90.,
+        objects_count: 10000,
+        min_radius: 20.,
         sleeves: 2,
-        curvature_angle: 9. * PI / 4.,
-    });
+        curvature_angle: 5. * PI / 4.,
+    };
+
+    make_orbit_each_other(&mut galaxy1, &mut galaxy2);
+
+    println!("{} {}", galaxy1.vel.length(), galaxy2.vel.length());
 
     let mut objects = Vec::new();
-    objects.append(&mut galaxy1);
+    objects.append(&mut spiral_galaxy(galaxy1));
+    objects.append(&mut spiral_galaxy(galaxy2));
 
     let mut state = State::new(objects, params);
     state.init(THETA);
