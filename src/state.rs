@@ -7,7 +7,7 @@ use {
     std::thread,
 };
 
-const THREADS: usize = 18;
+const THREADS: usize = 6;
 
 pub struct State {
     pub objects: Vec<Object>,

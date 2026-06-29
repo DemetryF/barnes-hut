@@ -40,7 +40,7 @@ pub fn spiral_galaxy(galaxy: SpiralGalaxy) -> Vec<Object> {
 
                 let shift = f32::atan2(2. * mn_hf_ax, peri);
 
-                spiral_point_angle + shift + PI / rand::gen_range::<f32>(3., 4.)
+                spiral_point_angle + shift + PI / rand::gen_range::<f32>(5., 7.)
             };
 
             let u = Vec2::from_angle(angle);
@@ -56,7 +56,7 @@ pub fn spiral_galaxy(galaxy: SpiralGalaxy) -> Vec<Object> {
                 pos,
                 vel,
                 mass,
-                radius: 0.35,
+                radius: 0.5,
                 ..Default::default()
             }
         })

@@ -15,7 +15,7 @@ use {
 
 const SPEED: f32 = 4.;
 const THETA: f32 = 1.;
-const MAX_DELTA_TIME: f32 = 0.5;
+const MAX_DELTA_TIME: f32 = 0.4;
 
 #[macroquad::main("Barnes-Hut")]
 async fn main() {
@@ -31,11 +31,11 @@ async fn main() {
         pos: Vec2::new(0., 0.),
         vel: Vec2::new(0., 0.),
         mass: 500000.,
-        max_radius: 300.,
+        max_radius: 350.,
         objects_count: 20000,
         min_radius: 100.,
         sleeves: 2,
-        curvature_angle: 5. * PI / 4.,
+        curvature_angle: 9. * PI / 4.,
     });
 
     let mut objects = Vec::new();
