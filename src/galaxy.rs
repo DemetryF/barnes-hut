@@ -4,6 +4,7 @@ use {
     std::{f32::consts::PI, iter},
 };
 
+#[derive(Default)]
 pub struct SpiralGalaxy {
     pub pos: Vec2,
     pub vel: Vec2,
@@ -41,7 +42,7 @@ pub fn spiral_galaxy(galaxy: SpiralGalaxy) -> Vec<Object> {
 
                 let shift = f32::atan2(2. * mn_hf_ax, peri);
 
-                spiral_point_angle + shift //+ PI / rand::gen_range::<f32>(5., 7.)
+                spiral_point_angle + shift
             };
 
             let angle = rand::gen_range(0., 2. * PI);

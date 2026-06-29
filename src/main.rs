@@ -1,3 +1,4 @@
+mod bench;
 mod galaxy;
 mod object;
 mod quadtree;
